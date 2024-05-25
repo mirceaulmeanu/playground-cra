@@ -4,8 +4,13 @@ import './index.css';
 import {App} from './App';
 import reportWebVitals from './reportWebVitals';
 import {ServiceFactory} from './services/service-factory';
+import {LocalStorageService} from './services/storage/local-storage.service';
+import {SessionStorageService} from './services/storage/session-storage.service';
 
-const services = new ServiceFactory()
+const localStorage = new LocalStorageService();
+const sessionStorage = new SessionStorageService();
+
+const services = new ServiceFactory(localStorage, sessionStorage);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
