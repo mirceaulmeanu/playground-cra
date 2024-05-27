@@ -1,9 +1,11 @@
-import styled from '@emotion/styled';
-import {AppBar, Box, Fab, IconButton, Toolbar} from '@mui/material';
+// import styled from '@emotion/styled';
+import {AppBar, Box, Fab, IconButton, Toolbar, styled} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import {useServices} from '../../react-hooks/use-services.hook';
+import {useCallback} from 'react';
 
 const StyledFab = styled(Fab)({
     position: 'absolute',
@@ -17,10 +19,15 @@ const StyledFab = styled(Fab)({
 interface IPlayBarProps {}
 
 export function PlayBar(props: IPlayBarProps) {
-    return <AppBar position="sticky" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+    const services = useServices()
+    const newStream = useCallback(() => {
+        services.streamForm.newStream();
+    }, [services.streamForm]);
+
+    return <AppBar position="sticky" enableColorOnDark sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
         <StyledFab color="secondary" aria-label="add">
-            <AddIcon />
+            <AddIcon onClick={newStream} />
         </StyledFab>
         <Box sx={{ flexGrow: 1 }} />
         <IconButton color="inherit" size="large">

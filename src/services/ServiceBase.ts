@@ -1,11 +1,9 @@
-import {makeObservable} from 'mobx';
 import {IServiceFactoryExtended} from './service-factory-extended.interface';
 // import {IReactionOptions} from "mobx";
 // import {reaction as mobxReaction, IReactionDisposer, IReactionPublic} from 'mobx'
 
 export abstract class ServiceBase {
     constructor(private _serviceFactory: IServiceFactoryExtended) {
-        makeObservable(this);
     }
 
     protected get services(): IServiceFactoryExtended {

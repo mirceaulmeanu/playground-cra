@@ -5,7 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 interface ITopBarProps {}
 
 export function TopBar(props: ITopBarProps) {
-    return <AppBar position="sticky" >
+    return <AppBar position="sticky" enableColorOnDark >
         <Toolbar>
         <IconButton
             size="large"

@@ -1,4 +1,4 @@
-import {Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText, Modal} from '@mui/material';
+import {Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText} from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
 import EditIcon from '@mui/icons-material/Edit';
 import {IStream} from '../../services/streams-list/streams-list.service.interface';
@@ -10,12 +10,12 @@ interface IStreamListItemProps {
     index: number;
 }
 
-export function StreamListItem (props: IStreamListItemProps) {
+export const StreamListItem: React.FC<IStreamListItemProps> = (props: IStreamListItemProps) => {
     const services = useServices();
     const {stream, index} = props;
     const editStream = useCallback(() => {
         services.streamForm.editStream(stream, index);
-    }, [services.streamForm]);
+    }, [services.streamForm, stream, index]);
     return <ListItem divider={true} secondaryAction={
         <IconButton aria-label="edit" onClick={editStream}>
             <EditIcon />
@@ -34,4 +34,4 @@ export function StreamListItem (props: IStreamListItemProps) {
             <ListItemText primary={stream.name} secondary={!index ? "Buffering ..." : undefined} />
         </ListItemButton>
     </ListItem>
-}
+};
