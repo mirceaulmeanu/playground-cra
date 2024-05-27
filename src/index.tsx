@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {ServiceFactory} from './services/service-factory';
 import {LocalStorageService} from './services/storage/local-storage.service';
 import {SessionStorageService} from './services/storage/session-storage.service';
+import {AppReactContextProvider} from './react-context/app-react-context';
 
 const localStorage = new LocalStorageService();
 const sessionStorage = new SessionStorageService();
@@ -13,12 +14,14 @@ const sessionStorage = new SessionStorageService();
 const services = new ServiceFactory(localStorage, sessionStorage);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <App services={services} />
-  </React.StrictMode>
+    <React.StrictMode>
+        <AppReactContextProvider value={{services: services}}>
+            <App services={services} />
+        </AppReactContextProvider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

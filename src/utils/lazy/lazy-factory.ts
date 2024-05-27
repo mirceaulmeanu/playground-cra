@@ -29,6 +29,10 @@ export class LazyFactory<T> extends AbstractLazyData<T> {
         }
         return this._data;
     }
+
+    get value(): NonNullable<T> {
+        return this.data;
+    }
     
     forceInit() {
         this._initValue();

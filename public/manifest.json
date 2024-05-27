@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Playground CRA",
+  "name": "Playground with example code to experiment with CRA",
   "icons": [
     {
       "src": "favicon.ico",
