@@ -7,5 +7,6 @@ export function MainMenu() {
         <p>List reorder with drag and drop</p>
         <p>ICY metadata</p>
         <p>Nicer play-bar with slide up animation</p>
+        <p>Usability in mobile landscape / very small viewports</p>
     </Box>;
 }
