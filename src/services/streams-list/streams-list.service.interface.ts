@@ -2,6 +2,8 @@ export interface IStream {
     url: string;
     name: string;
     image?: string;
+    playMessage?: string;
+    errorMessage?: string;
 }
 
 export interface IStreamsListService {

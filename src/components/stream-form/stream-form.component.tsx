@@ -108,7 +108,7 @@ export const StreamForm: React.FC = observer(() => {
             />
         </DialogContent>
         <DialogActions>
-            <IconButton onClick={handleDelete}><DeleteIcon /></IconButton>
+            { localStream.url && localStream.name ? <IconButton onClick={handleDelete}><DeleteIcon /></IconButton> : null }
             <div style={{flexGrow: 1}}></div>
             <Button onClick={handleClose}>Cancel</Button>
             <Button type="submit" variant="contained">{services.streamForm.stream ? "Save" : "Add"}</Button>

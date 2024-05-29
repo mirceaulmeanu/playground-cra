@@ -4,26 +4,32 @@ import EditIcon from '@mui/icons-material/Edit';
 import {IStream} from '../../services/streams-list/streams-list.service.interface';
 import {useCallback} from 'react';
 import {useServices} from '../../react-hooks/use-services.hook';
+import {observer} from 'mobx-react';
 
 interface IStreamListItemProps {
     stream: IStream;
     index: number;
 }
 
-export const StreamListItem: React.FC<IStreamListItemProps> = (props: IStreamListItemProps) => {
+export const StreamListItem: React.FC<IStreamListItemProps> = observer((props: IStreamListItemProps) => {
     const services = useServices();
     const {stream, index} = props;
     const editStream = useCallback(() => {
         services.streamForm.editStream(stream, index);
     }, [services.streamForm, stream, index]);
-    return <ListItem divider={true} secondaryAction={
+    
+    const playStream = useCallback(() => {
+        services.streamPlay.playStream(stream);
+    }, [services.streamPlay, stream]);
+    
+    return <ListItem divider={true} secondaryAction={services.streamPlay.currentStream === stream ? null :
         <IconButton aria-label="edit" onClick={editStream}>
             <EditIcon />
         </IconButton>
     }>
-        <ListItemButton>
+        <ListItemButton onClick={playStream}>
             <ListItemAvatar>
-            <Avatar variant="square">
+            <Avatar variant="square" sx={{backgroundColor: "transparent"}}>
                 {stream.image ? <img
                 src={stream.image}
                 style={{width: "100%"}}
@@ -31,7 +37,7 @@ export const StreamListItem: React.FC<IStreamListItemProps> = (props: IStreamLis
                 /> : <ImageIcon />}
             </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={stream.name} secondary={!index ? "Buffering ..." : undefined} />
+            <ListItemText primary={stream.name} secondary={(services.streamPlay.currentStream === stream && stream.playMessage) ? stream.playMessage : stream.errorMessage} />
         </ListItemButton>
     </ListItem>
-};
+});

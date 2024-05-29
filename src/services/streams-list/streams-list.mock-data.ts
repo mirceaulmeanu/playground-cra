@@ -9,7 +9,7 @@ export const streamsListMockData: IStream[] = [
     {
         "name" : "Rock FM Hard Rock",
         "url" : "https://live.rockfm.ro/hard.rock",
-        "image": "https://media.bauerradio.com/image/upload/c_crop"
+        "image": "https://media.bauerradio.com/image/upload/c_crop,g_custom/v1606737505/brand_manager/stations/qyxv7nnrvwnnokjxrxgi.jpg"
     },
     {
         "name" : "Radio Seven 103.4",
@@ -34,7 +34,7 @@ export const streamsListMockData: IStream[] = [
     {
         "name" : "Radio 90s HITS",
         "url" : "https://live-bauerdk.sharp-stream.com/DK_HQ_RP06.aac",
-        "image": "https://media.bauerradio.com/image/upload/c_crop"
+        "image": "https://media.bauerradio.com/image/upload/c_crop,g_custom/v1601989516/brand_manager/stations/llhkjewdg3glk1yebysr.png"
     },
     {
         "name" : "Rock Radio 1",
