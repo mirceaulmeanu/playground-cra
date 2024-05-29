@@ -60,7 +60,8 @@ export class StreamsListService extends ServiceBase implements IStreamsListServi
         const listToSave = this.streamsList.map((stream) => {
             return {
                 ...stream,
-                playMessage: undefined
+                playMessage: undefined,
+                errorMessage: undefined
             }
         });
         this.services.localStorage.setJson(STREAMS_LIST_LOCAL_STORAGE_KEY, listToSave);

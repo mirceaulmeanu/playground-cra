@@ -1,13 +1,21 @@
 import {runInAction} from "mobx";
 import {IStream} from "../../streams-list/streams-list.service.interface";
 import {AudioElementProxy} from "../audio-element-proxy/audio-element-proxy";
-import {IPlayStreamStrategy} from "./play-stream-strategy.interface";
+import {IAudioElementProxyOptions, IPlayStreamStrategy} from "./play-stream-strategy.interface";
+import {clamp} from "../../../utils/clamp";
 
 export class SimpleAudioElementPlayStreamStrategy implements IPlayStreamStrategy {
     // the reason for using an array is that play is async and we cannot safely switch from a stream to another while loading
     // so we keep an array, and when we quickly add streams, the others are disposed and popped
     // most of the time this array length will be 1
     public audioProxies: AudioElementProxy[] = [];
+
+    // volume is kept here to be available for newly created audio proxies, so we don't need to pass it as an argument to playStream
+    private volume: number = 1;
+
+    constructor(private opts?: IAudioElementProxyOptions) {
+        this.volume = this.opts?.volume || 1;
+    }
 
     dispose() {
         const disposePromises = this.audioProxies.map((proxy) => proxy.dispose());
@@ -24,20 +32,25 @@ export class SimpleAudioElementPlayStreamStrategy implements IPlayStreamStrategy
             this.audioProxies = this.audioProxies.filter(p => !p.disposed);
             this.audioProxies.forEach(p => p.dispose());
             const proxy = new AudioElementProxy(stream.url, {
+                volume: this.volume,
                 onLoading: () => {
                     runInAction(() => { stream.playMessage = "Loading..."; });
+                    if (this.opts?.onLoading) { this.opts.onLoading(); }
                 },
                 onPlaying: () => {
                     runInAction(() => { stream.playMessage = "Playing"; });
+                    if (this.opts?.onPlaying) { this.opts.onPlaying(); }
                 },
                 onPause: () => {
                     runInAction(() => { stream.playMessage = "Paused"; });
+                    if (this.opts?.onPause) { this.opts.onPause(); }
                 },
                 onError: () => {
                     runInAction(() => {
                         stream.playMessage = undefined;
                         stream.errorMessage = "An error occured. Please check the url or try again later";
                     });
+                    if (this.opts?.onError) { this.opts.onError(); }
                 }
             });
             this.audioProxies.push(proxy);
@@ -71,5 +84,10 @@ export class SimpleAudioElementPlayStreamStrategy implements IPlayStreamStrategy
     stop(): void {
         this.audioProxies = this.audioProxies.filter(p => !p.disposed);
         this.audioProxies.forEach(p => p.dispose());
+    }
+
+    setVolume(v: number) {
+        this.volume = clamp(v, 0, 1);
+        this.audioProxies.forEach(p => p.setVolume(this.volume));
     }
 }

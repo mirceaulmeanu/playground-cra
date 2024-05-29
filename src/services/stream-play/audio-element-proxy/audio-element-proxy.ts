@@ -4,6 +4,7 @@ export class AudioElementProxy {
     public readonly url: string;
     private audioElement: HTMLAudioElement;
     private playPromise: Promise<void> = Promise.resolve();
+
     constructor(
         url: string,
         private opts?: IAudioElementProxyOptions,
@@ -11,8 +12,12 @@ export class AudioElementProxy {
         this.url = url;
         this.audioElement = document.createElement('audio');
         this.audioElement.src = url;
+        if (this.opts?.volume) {
+            this.setVolume(this.opts.volume);
+        }
         // this.audioElement.controls = true;
         
+        // I'm not using this event listener because when the streams error it sets itself on pause and it looks like it was paused by user
         // if (this.opts?.onPause) {
         //     this.audioElement.addEventListener("pause", this.opts.onPause);
         // }
@@ -41,6 +46,7 @@ export class AudioElementProxy {
             return this._disposePromise;
         }
         this._disposePromise = this.playPromise.then(() => {
+            // I'm not using this event listener because when the streams error it sets itself on pause and it looks like it was paused by user
             // if (this.opts?.onPause) {
             //     this.audioElement.removeEventListener("pause", this.opts.onPause);
             // }
@@ -96,5 +102,13 @@ export class AudioElementProxy {
                 this.opts.onPause();
             }
         });
+    }
+
+    get volume() {
+        return this.audioElement.volume;
+    }
+
+    setVolume(v: number) {
+        this.audioElement.volume = v;
     }
 }

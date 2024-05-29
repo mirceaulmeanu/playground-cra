@@ -15,6 +15,7 @@ export interface IStreamPlayService {
 
     readonly currentStream: IStream | undefined;
     readonly currentStreamState: StreamState;
+    volume: number;
     playStream(stream?: IStream): void;
     pauseStream(): void;
     stop(): void;

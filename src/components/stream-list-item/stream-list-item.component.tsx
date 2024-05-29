@@ -22,8 +22,7 @@ export const StreamListItem: React.FC<IStreamListItemProps> = observer((props: I
         services.streamPlay.playStream(stream);
     }, [services.streamPlay, stream]);
     
-    return <ListItem divider={true} secondaryAction={services.streamPlay.currentStream === stream ? null :
-        <IconButton aria-label="edit" onClick={editStream}>
+    return <ListItem divider={true} secondaryAction={/* services.streamPlay.currentStream === stream ? null : */<IconButton aria-label="edit" onClick={editStream}>
             <EditIcon />
         </IconButton>
     }>

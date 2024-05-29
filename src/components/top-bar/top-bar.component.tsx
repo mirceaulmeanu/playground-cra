@@ -1,11 +1,12 @@
 import {AppBar, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from '@mui/icons-material/Settings';
+import {HideOnScroll} from './hide-on-scroll.component';
 
 interface ITopBarProps {}
 
 export function TopBar(props: ITopBarProps) {
-    return <AppBar position="sticky" enableColorOnDark >
+    return <HideOnScroll><AppBar position="sticky" enableColorOnDark >
         <Toolbar>
         <IconButton
             size="large"
@@ -28,5 +29,5 @@ export function TopBar(props: ITopBarProps) {
             <SettingsIcon />
         </IconButton>
         </Toolbar>
-    </AppBar>
+    </AppBar></HideOnScroll>
 }

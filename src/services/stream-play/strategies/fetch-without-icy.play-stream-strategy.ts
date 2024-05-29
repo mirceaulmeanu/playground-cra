@@ -106,4 +106,7 @@ export class FetchWithoutIcyPlayStreamStrategy implements IPlayStreamStrategy {
     stop(): void {
         throw new Error("NOT IMPLEMENTED");
     }
+    setVolume(v: number): void {
+        throw new Error("NOT IMPLEMENTED");
+    }
 }

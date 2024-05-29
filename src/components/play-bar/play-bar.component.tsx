@@ -1,14 +1,17 @@
 // import styled from '@emotion/styled';
-import {AppBar, Avatar, Box, Fab, IconButton, Toolbar, Typography, styled} from '@mui/material';
+import {AppBar, Avatar, Box, Fab, IconButton, Slider, Stack, Toolbar, Typography, styled, useTheme} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import StopIcon from '@mui/icons-material/Stop';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import VolumeDownIcon from '@mui/icons-material/VolumeDown';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import {useServices} from '../../react-hooks/use-services.hook';
 import {useCallback} from 'react';
 import {observer} from 'mobx-react';
+import {LoadingBox} from './boxes/loading.box';
 
 const StyledFab = styled(Fab)({
     position: 'absolute',
@@ -22,7 +25,8 @@ const StyledFab = styled(Fab)({
 interface IPlayBarProps {}
 
 export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) => {
-    const services = useServices()
+    const services = useServices();
+    const theme = useTheme();
     const newStream = useCallback(() => {
         services.streamForm.newStream();
     }, [services.streamForm]);
@@ -60,6 +64,11 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
     const stopStream = useCallback(() => {
         services.streamPlay.stop();
     }, [services.streamPlay]);
+
+    const handleVolumeChange = useCallback((event: Event, newValue: number | number[]) => {
+        console.log("VOLUME", newValue);
+        services.streamPlay.volume = newValue as number;
+    }, [services.streamPlay]);
     
 
     return <AppBar position="sticky" enableColorOnDark sx={{ top: 'auto', bottom: 0 }}>
@@ -84,18 +93,32 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
             <Typography align='center' margin="1rem">{services.streamPlay.currentStream.name}</Typography>
         </Box>
         <Toolbar>
+            { services.streamPlay.isCurrentStreamLoading() ? <LoadingBox /> : null }
             <Box sx={{ flexGrow: 1 }} />
             <IconButton color="inherit" size="large" onClick={previousStream}>
                 <SkipPreviousIcon/>
             </IconButton>
             <IconButton color="inherit" size="large" onClick={handleCurrentStream}>
-                { services.streamPlay.isCurrentStreamPlaying() ? <PauseIcon fontSize="large" /> :
-                <PlayArrowIcon fontSize="large" /> }
+                {
+                    services.streamPlay.isCurrentStreamPlaying() || services.streamPlay.isCurrentStreamLoading() || services.streamPlay.isCurrentStreamBuffering() ?
+                    <PauseIcon fontSize="large" /> :
+                    <PlayArrowIcon fontSize="large" />
+                }
             </IconButton>
             <IconButton color="inherit" size="large" onClick={nextStream}>
                 <SkipNextIcon />
             </IconButton>
             <Box sx={{ flexGrow: 1 }} />
+        </Toolbar>
+        <Toolbar >
+            <VolumeDownIcon htmlColor='#ccc' sx={{mx: 2}} />
+            <Slider
+                aria-label="volume" value={services.streamPlay.volume} onChange={handleVolumeChange} min={0} max={1} step={0.05}
+                sx={{
+                    color: theme.palette.mode === 'dark' ? '#fff' : '#fff',
+                }}
+            />
+            <VolumeUpIcon htmlColor='#ccc' sx={{mx: 2}} />
         </Toolbar>
         </> : null }
         

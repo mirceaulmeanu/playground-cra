@@ -1,21 +1,37 @@
-import {action, makeObservable, observable} from "mobx";
+import {action, makeObservable, observable, runInAction} from "mobx";
 import {ServiceBase} from "../ServiceBase"
 import {IStream} from "../streams-list/streams-list.service.interface";
 import {IStreamPlayService, StreamState} from "./stream-play.service.interface";
 import {IServiceFactoryExtended} from "../service-factory-extended.interface";
 import {IPlayStreamStrategy} from "./strategies/play-stream-strategy.interface";
 import {SimpleAudioElementPlayStreamStrategy} from "./strategies/simple-audio-element.play-stream-strategy";
+import {clamp} from "../../utils/clamp";
 
 export class StreamPlayService extends ServiceBase implements IStreamPlayService {
     constructor(services: IServiceFactoryExtended) {
         super(services);
         makeObservable(this);
     }
-    private playStrategy: IPlayStreamStrategy = new SimpleAudioElementPlayStreamStrategy();
+    private playStrategy: IPlayStreamStrategy = new SimpleAudioElementPlayStreamStrategy({
+        onLoading: () => {
+            runInAction(() => { this.currentStreamState = StreamState.Loading; });
+        },
+        onPlaying: () => {
+            runInAction(() => { this.currentStreamState = StreamState.Playing; });
+        },
+        onPause: () => {
+            runInAction(() => { this.currentStreamState = StreamState.Paused; });
+        },
+        onError: () => {
+            runInAction(() => { this.currentStreamState = StreamState.Error; });
+        }
+    });
     @observable
     public currentStream: IStream | undefined;
     @observable
     public currentStreamState: StreamState = StreamState.Idle;
+    @observable
+    private _volume: number = 1;
 
     public setPlayStrategy(newStrategy: IPlayStreamStrategy) {
         if (this.playStrategy.dispose) {
@@ -44,14 +60,14 @@ export class StreamPlayService extends ServiceBase implements IStreamPlayService
             throw new Error("Play stream ws called but there is no stream to be played");
         }
         this.playStrategy.playStream(this.currentStream);
-        this.currentStreamState = StreamState.Playing;
+        // this.currentStreamState = StreamState.Playing;
     }
 
     @action
     pauseStream(): void {
         this.playStrategy.pauseStream();
         // this.currentStream = undefined;
-        this.currentStreamState = StreamState.Paused;
+        // this.currentStreamState = StreamState.Paused;
     }
 
     @action
@@ -61,6 +77,15 @@ export class StreamPlayService extends ServiceBase implements IStreamPlayService
         this.currentStream = undefined;
     }
 
+    set volume(v: number) {
+        runInAction(() => {
+            this._volume = clamp(v, 0, 1);
+            this.playStrategy.setVolume(this._volume);
+        });
+    }
+    get volume() {
+        return this._volume;
+    }
     
     isCurrentStreamIdle(): boolean { return this.currentStreamState === StreamState.Idle; }
     isCurrentStreamLoading(): boolean { return this.currentStreamState === StreamState.Loading; }

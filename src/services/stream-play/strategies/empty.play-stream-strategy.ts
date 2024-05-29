@@ -22,4 +22,8 @@ export class EmptyPlayStreamStrategy implements IPlayStreamStrategy {
          * currentStream inside stream-play.service should be observable and set to null
          */
     }
+
+    setVolume(v: number): void {
+        throw new Error("NOT IMPLEMENTED");
+    }
 }

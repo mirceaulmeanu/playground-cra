@@ -85,6 +85,9 @@ export const StreamForm: React.FC = observer(() => {
                 value={localStream.url}
                 onChange={(ev) => {
                     runInAction(() => {
+                        // if (localStream.url !== ev.target.value) {
+                        //     localStream.errorMessage = undefined;
+                        // }
                         localStream.url = ev.target.value;
                         setLocalStream({ ...localStream });
                     })
@@ -98,10 +101,10 @@ export const StreamForm: React.FC = observer(() => {
                 type="url"
                 fullWidth
                 variant="standard"
-                value={localStream.image}
+                value={localStream.image ? localStream.image : ""}
                 onChange={(ev) => {
                     runInAction(() => {
-                        localStream.image = ev.target.value;
+                        localStream.image = ev.target.value ? ev.target.value : undefined;
                         setLocalStream({ ...localStream });
                     })
                 }}
