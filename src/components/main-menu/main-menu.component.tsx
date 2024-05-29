@@ -4,9 +4,11 @@ export function MainMenu() {
     return <Box sx={{m: 2}}>
         <p>Main menu is not implemented yet</p>
         <p>Need to implement</p>
-        <p>List reorder with drag and drop</p>
-        <p>ICY metadata</p>
-        <p>Nicer play-bar with slide up animation</p>
-        <p>Usability in mobile landscape / very small viewports</p>
+        <ul>
+            <li>List reorder with drag and drop</li>
+            <li>ICY metadata</li>
+            <li>Nicer play-bar with slide up animation</li>
+            <li>Usability in mobile landscape / very small viewports</li>
+        </ul>
     </Box>;
 }
