@@ -7,10 +7,13 @@ import {IPlayStreamStrategy} from "./strategies/play-stream-strategy.interface";
 import {SimpleAudioElementPlayStreamStrategy} from "./strategies/simple-audio-element.play-stream-strategy";
 import {clamp} from "../../utils/clamp";
 
+const STREAM_PLAY_VOLUME = "STREAM_PLAY_VOLUME";
 export class StreamPlayService extends ServiceBase implements IStreamPlayService {
     constructor(services: IServiceFactoryExtended) {
         super(services);
         makeObservable(this);
+        const volumeStored = this.services.localStorage.getItem(STREAM_PLAY_VOLUME);
+        this.volume = parseFloat(volumeStored || "1");
     }
     private playStrategy: IPlayStreamStrategy = new SimpleAudioElementPlayStreamStrategy({
         onLoading: () => {
@@ -81,6 +84,7 @@ export class StreamPlayService extends ServiceBase implements IStreamPlayService
         runInAction(() => {
             this._volume = clamp(v, 0, 1);
             this.playStrategy.setVolume(this._volume);
+            this.services.localStorage.setItem(STREAM_PLAY_VOLUME, this._volume.toString());
         });
     }
     get volume() {

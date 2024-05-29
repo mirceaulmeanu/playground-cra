@@ -66,7 +66,6 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
     }, [services.streamPlay]);
 
     const handleVolumeChange = useCallback((event: Event, newValue: number | number[]) => {
-        console.log("VOLUME", newValue);
         services.streamPlay.volume = newValue as number;
     }, [services.streamPlay]);
     
