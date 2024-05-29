@@ -1,5 +1,5 @@
 // import styled from '@emotion/styled';
-import {AppBar, Avatar, Box, Fab, IconButton, Slider, Stack, Toolbar, Typography, styled, useTheme} from '@mui/material';
+import {AppBar, Avatar, Box, Fab, IconButton, Slider, Toolbar, Typography, styled, useTheme} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import StopIcon from '@mui/icons-material/Stop';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -12,6 +12,7 @@ import {useServices} from '../../react-hooks/use-services.hook';
 import {useCallback} from 'react';
 import {observer} from 'mobx-react';
 import {LoadingBox} from './boxes/loading.box';
+import {AspectRatioContainer} from '../aspect-ratio-container.component';
 
 const StyledFab = styled(Fab)({
     position: 'absolute',
@@ -70,7 +71,7 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
     }, [services.streamPlay]);
     
 
-    return <AppBar position="sticky" enableColorOnDark sx={{ top: 'auto', bottom: 0 }}>
+    return <AppBar position="sticky" sx={{ top: 'auto', bottom: 0 }}>
         <StyledFab
             color={services.streamPlay.currentStream ? undefined : "secondary"}
             aria-label={services.streamPlay.currentStream ? 'stop' : 'add'}
@@ -80,13 +81,15 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
         </StyledFab>
         { services.streamPlay.currentStream ? <>
             { services.streamPlay.currentStream.image ? <div style={{width: "50%", maxWidth: "300px", margin: "1rem auto 0"}}>
-                <Avatar variant="square" sx={{backgroundColor: "transparent", width: "100%", height: "100%"}}>
-                    <img
-                        src={services.streamPlay.currentStream.image}
-                        style={{width: "100%"}}
-                        alt={`Logo ${services.streamPlay.currentStream.name}`}
-                    />
-                </Avatar>
+                <AspectRatioContainer width={1} height={1}>
+                    <Avatar variant="square" sx={{width: "100%", height: "100%"}}>
+                        <img
+                            src={services.streamPlay.currentStream.image}
+                            style={{width: "100%"}}
+                            alt={`Logo ${services.streamPlay.currentStream.name}`}
+                        />
+                    </Avatar>
+                </AspectRatioContainer>
             </div> : null }
         <Box>
             <Typography align='center' margin="1rem">{services.streamPlay.currentStream.name}</Typography>

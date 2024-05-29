@@ -6,7 +6,7 @@ import {HideOnScroll} from './hide-on-scroll.component';
 interface ITopBarProps {}
 
 export function TopBar(props: ITopBarProps) {
-    return <HideOnScroll><AppBar position="sticky" enableColorOnDark >
+    return <HideOnScroll><AppBar position="sticky" >
         <Toolbar>
         <IconButton
             size="large"

@@ -1,5 +1,5 @@
 import {Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText} from '@mui/material';
-import ImageIcon from '@mui/icons-material/Image';
+// import ImageIcon from '@mui/icons-material/Image';
 import EditIcon from '@mui/icons-material/Edit';
 import {IStream} from '../../services/streams-list/streams-list.service.interface';
 import {useCallback} from 'react';
@@ -28,12 +28,12 @@ export const StreamListItem: React.FC<IStreamListItemProps> = observer((props: I
     }>
         <ListItemButton onClick={playStream}>
             <ListItemAvatar>
-            <Avatar variant="square" sx={{backgroundColor: "transparent"}}>
+            <Avatar variant="square">
                 {stream.image ? <img
                 src={stream.image}
                 style={{width: "100%"}}
                 alt={`Logo ${stream.name}`}
-                /> : <ImageIcon />}
+                /> : stream.name.substring(0, 1).toUpperCase()}
             </Avatar>
             </ListItemAvatar>
             <ListItemText primary={stream.name} secondary={(services.streamPlay.currentStream === stream && stream.playMessage) ? stream.playMessage : stream.errorMessage} />
