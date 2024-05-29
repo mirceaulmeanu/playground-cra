@@ -1,5 +1,7 @@
 import {LazyFactory} from "../utils/lazy/lazy-factory";
 import {IServiceFactoryExtended} from "./service-factory-extended.interface";
+import {SettingsService} from "./settings/settings.service";
+import {ISettingsService} from "./settings/settings.service.interface";
 import {IStorageService} from "./storage/storage.service.interface";
 import {StreamFormService} from "./stream-form/stream-form.service";
 import {IStreamFormService} from "./stream-form/stream-form.service.interface";
@@ -13,6 +15,11 @@ export class ServiceFactory implements IServiceFactoryExtended {
         readonly localStorage: IStorageService,
         readonly sessionStorage: IStorageService
     ) {}
+
+    private _settings = new LazyFactory<ISettingsService>(() => new SettingsService(this));
+    public get settings(): ISettingsService {
+        return this._settings.data;
+    }
 
     private _streamsList = new LazyFactory<IStreamsListService>(() => new StreamsListService(this));
     public get streamsList(): IStreamsListService {

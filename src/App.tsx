@@ -7,22 +7,20 @@ import {PlayBar} from './components/play-bar/play-bar.component';
 import {AppContainer} from './components/app-container/app-container.component';
 import {StreamsList} from './components/streams-list/streams-list.component';
 import {StreamForm} from './components/stream-form/stream-form.component';
+import {observer} from 'mobx-react';
 
 interface IAppProps {
-  services: IServiceFactoryExtended;
+    services: IServiceFactoryExtended;
 }
 
-export function App(props: IAppProps) {
-    /**
-     * TODO: Move preffered color scheme to a service
-     */
-    const preferredColorScheme: 'dark' | 'light' | undefined = 'light';
+export const App = observer((props: IAppProps) => {
+    const preferredColorScheme: 'dark' | 'light' | undefined = props.services.settings.theme === "system" ? undefined : props.services.settings.theme;;
     const systemColorScheme = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : "light";
     const theme = createTheme({
         palette: {
-          mode: preferredColorScheme || systemColorScheme,
+            mode: preferredColorScheme || systemColorScheme,
         },
-      });
+    });
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -37,4 +35,4 @@ export function App(props: IAppProps) {
             </AppContainer>
         </ThemeProvider>
     );
-}
+});
