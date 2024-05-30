@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Radio Playground Stream</string>
+    <string name="title_activity_main">Radio Playground Stream</string>
+    <string name="package_name">com.ulmeanu.radioplaygroundstream</string>
+    <string name="custom_url_scheme">com.ulmeanu.radioplaygroundstream</string>
+</resources>
