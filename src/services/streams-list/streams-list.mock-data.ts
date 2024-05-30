@@ -19,17 +19,20 @@ export const streamsListMockData: IStream[] = [
     },
     {
         "name" : "Radio Café",
-        "url" : "http://live.radiocafe.ro:8048/live.aac",
+        // "url" : "http://live.radiocafe.ro:8048/live.aac",
+        "url": "https://live.radiocafe.ro/live.aac",
         "image": "https://radiocafe.ro/wp-content/uploads/2018/12/logo-fara-90fm-resize-e1546368131330.png"
     },
     {
         "name" : "Magic FM 90.8/93.9",
-        "url" : "http://live.magicfm.ro:9128/magicfm.aacp",
+        // "url": "http://live.magicfm.ro:9128/magicfm.aacp",
+        "url": "https://live.magicfm.ro/magicfm.aacp",
         "image": "https://www.magicfm.ro/assets/logo/magicfm.png"
     },
     {
         "name" : "Smart FM 107.3",
-        "url" : "http://live.smartradio.ro:9128/live",
+        // "url" : "http://live.smartradio.ro:9128/live",
+        "url": "https://live.smartradio.ro:8443/live",
         "image": "https://myradioonline.ro/public/uploads/radio_img/smart-radio/play_250_250.jpg"
     },
     {
