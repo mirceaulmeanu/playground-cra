@@ -119,7 +119,7 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
                 aria-label="volume" value={services.streamPlay.volume} onChange={handleVolumeChange} min={0} max={1} step={0.001}
                 sx={{
                     color: theme.palette.mode === 'dark' ? '#fff' : '#fff',
-                    maxWidth: "480px"
+                    maxWidth: "620px"
                 }}
             />
             <VolumeUpIcon htmlColor='#ccc' sx={{mx: 2}} />
