@@ -1,7 +1,7 @@
 import React from 'react';
 import {IServiceFactoryExtended} from './services/service-factory-extended.interface';
 import CssBaseline from '@mui/material/CssBaseline';
-import {Container, ThemeProvider, createTheme, useMediaQuery} from '@mui/material';
+import {Box, ThemeProvider, createTheme, useMediaQuery} from '@mui/material';
 import {TopBar} from './components/top-bar/top-bar.component';
 import {PlayBar} from './components/play-bar/play-bar.component';
 import {AppContainer} from './components/app-container/app-container.component';
@@ -26,9 +26,9 @@ export const App = observer((props: IAppProps) => {
             <CssBaseline />
             <AppContainer>
                 <TopBar />
-                <Container style={{margin: "0 auto", flexGrow: 1}}>
+                <Box style={{margin: "0 auto", flexGrow: 1, width: "100%", maxWidth: "768px"}}>
                     <StreamsList />
-                </Container>
+                </Box>
                 <div style={{height: "2rem", flexShrink: 0}} />
                 <PlayBar />
                 <StreamForm />

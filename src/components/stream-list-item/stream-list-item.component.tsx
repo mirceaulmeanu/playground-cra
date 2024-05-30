@@ -26,7 +26,7 @@ export const StreamListItem: React.FC<IStreamListItemProps> = observer((props: I
             <EditIcon />
         </IconButton>
     }>
-        <ListItemButton onClick={playStream}>
+        <ListItemButton onClick={playStream} style={{padding: "0 16px 0 0"}}>
             <ListItemAvatar>
             <Avatar variant="square">
                 {stream.image ? <img

@@ -14,15 +14,16 @@ import {observer} from 'mobx-react';
 import {LoadingBox} from './boxes/loading.box';
 import {AspectRatioContainer} from '../aspect-ratio-container.component';
 
-const StyledFab = styled(Fab)({
-    position: 'absolute',
-    zIndex: 1,
-    top: -50,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  });
-  
+const StyledFab = styled(Fab)`
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-70%);
+    margin: 0 auto;
+`;
+
 interface IPlayBarProps {}
 
 export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) => {
@@ -69,13 +70,12 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
     const handleVolumeChange = useCallback((event: Event, newValue: number | number[]) => {
         services.streamPlay.volume = newValue as number;
     }, [services.streamPlay]);
-    
 
     return <AppBar position="sticky" sx={{ top: 'auto', bottom: 0 }}>
         <StyledFab
             color={services.streamPlay.currentStream ? undefined : "secondary"}
             aria-label={services.streamPlay.currentStream ? 'stop' : 'add'}
-            size={services.streamPlay.currentStream ? 'small' : 'large'}
+            size={services.streamPlay.currentStream ? 'medium' : 'large'}
         >
             {services.streamPlay.currentStream ? <StopIcon onClick={stopStream} /> : <AddIcon onClick={newStream} />}
         </StyledFab>
@@ -91,38 +91,38 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
                     </Avatar>
                 </AspectRatioContainer>
             </div> : null }
-        <Box>
-            <Typography align='center' margin="1rem">{services.streamPlay.currentStream.name}</Typography>
-        </Box>
-        <Toolbar>
-            { services.streamPlay.isCurrentStreamLoading() ? <LoadingBox /> : null }
-            <Box sx={{ flexGrow: 1 }} />
-            <IconButton color="inherit" size="large" onClick={previousStream}>
-                <SkipPreviousIcon/>
-            </IconButton>
-            <IconButton color="inherit" size="large" onClick={handleCurrentStream}>
-                {
-                    services.streamPlay.isCurrentStreamPlaying() || services.streamPlay.isCurrentStreamLoading() || services.streamPlay.isCurrentStreamBuffering() ?
-                    <PauseIcon fontSize="large" /> :
-                    <PlayArrowIcon fontSize="large" />
-                }
-            </IconButton>
-            <IconButton color="inherit" size="large" onClick={nextStream}>
-                <SkipNextIcon />
-            </IconButton>
-            <Box sx={{ flexGrow: 1 }} />
-        </Toolbar>
-        <Toolbar >
+            <Box>
+                <Typography align='center' margin="1rem">{services.streamPlay.currentStream.name}</Typography>
+            </Box>
+            <Toolbar>
+                { services.streamPlay.isCurrentStreamLoading() ? <LoadingBox /> : null }
+                <Box sx={{ flexGrow: 1 }} />
+                <IconButton color="inherit" size="large" onClick={previousStream}>
+                    <SkipPreviousIcon/>
+                </IconButton>
+                <IconButton color="inherit" size="large" onClick={handleCurrentStream}>
+                    {
+                        services.streamPlay.isCurrentStreamPlaying() || services.streamPlay.isCurrentStreamLoading() || services.streamPlay.isCurrentStreamBuffering() ?
+                        <PauseIcon fontSize="large" /> :
+                        <PlayArrowIcon fontSize="large" />
+                    }
+                </IconButton>
+                <IconButton color="inherit" size="large" onClick={nextStream}>
+                    <SkipNextIcon />
+                </IconButton>
+                <Box sx={{ flexGrow: 1 }} />
+            </Toolbar>
+        </> : null }
+        <Toolbar style={{justifyContent: "center"}}>
             <VolumeDownIcon htmlColor='#ccc' sx={{mx: 2}} />
             <Slider
-                aria-label="volume" value={services.streamPlay.volume} onChange={handleVolumeChange} min={0} max={1} step={0.05}
+                aria-label="volume" value={services.streamPlay.volume} onChange={handleVolumeChange} min={0} max={1} step={0.001}
                 sx={{
                     color: theme.palette.mode === 'dark' ? '#fff' : '#fff',
+                    maxWidth: "480px"
                 }}
             />
             <VolumeUpIcon htmlColor='#ccc' sx={{mx: 2}} />
         </Toolbar>
-        </> : null }
-        
     </AppBar>
 });
