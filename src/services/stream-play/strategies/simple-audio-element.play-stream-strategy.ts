@@ -34,15 +34,15 @@ export class SimpleAudioElementPlayStreamStrategy implements IPlayStreamStrategy
             const proxy = new AudioElementProxy(stream.url, {
                 volume: this.volume,
                 onLoading: () => {
-                    runInAction(() => { stream.playMessage = "Loading..."; });
+                    runInAction(() => { stream.playMessage = "Loading..."; stream.errorMessage = undefined; });
                     if (this.opts?.onLoading) { this.opts.onLoading(); }
                 },
                 onPlaying: () => {
-                    runInAction(() => { stream.playMessage = "Playing"; });
+                    runInAction(() => { stream.playMessage = "Playing"; stream.errorMessage = undefined; });
                     if (this.opts?.onPlaying) { this.opts.onPlaying(); }
                 },
                 onPause: () => {
-                    runInAction(() => { stream.playMessage = "Paused"; });
+                    runInAction(() => { stream.playMessage = "Paused"; stream.errorMessage = undefined; });
                     if (this.opts?.onPause) { this.opts.onPause(); }
                 },
                 onError: () => {
