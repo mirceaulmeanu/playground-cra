@@ -72,13 +72,14 @@ export const PlayBar: React.FC<IPlayBarProps> = observer((props: IPlayBarProps) 
     }, [services.streamPlay]);
 
     return <AppBar position="sticky" sx={{ top: 'auto', bottom: 0 }}>
-        <StyledFab
-            color={services.streamPlay.currentStream ? undefined : "secondary"}
-            aria-label={services.streamPlay.currentStream ? 'stop' : 'add'}
-            size={services.streamPlay.currentStream ? 'medium' : 'large'}
-        >
-            {services.streamPlay.currentStream ? <StopIcon onClick={stopStream} /> : <AddIcon onClick={newStream} />}
-        </StyledFab>
+        {!services.streamPlay.currentStream && services.settings.isAddStreamFABShown ?
+        <StyledFab color="secondary" aria-label='add' size='large' >
+            <AddIcon onClick={newStream} />
+        </StyledFab> : null }
+        {services.streamPlay.currentStream ?
+        <StyledFab aria-label='stop' size='medium'>
+            <StopIcon onClick={stopStream} />
+        </StyledFab> : null }
         { services.streamPlay.currentStream ? <>
             { services.streamPlay.currentStream.image ? <div style={{width: "50%", maxWidth: "300px", margin: "1rem auto 0"}}>
                 <AspectRatioContainer width={1} height={1}>
