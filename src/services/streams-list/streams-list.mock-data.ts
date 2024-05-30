@@ -3,7 +3,8 @@ import {IStream} from "./streams-list.service.interface";
 export const streamsListMockData: IStream[] = [
     {
         "name" : "Rock FM 100.6",
-        "url" : "http://live.rockfm.ro:9128/rockfm.aacp",
+        // "url" : "http://live.rockfm.ro:9128/rockfm.aacp",
+        "url" : "https://live.rockfm.ro/rockfm.aacp",
         "image": "https://www.rockfm.ro/assets/logo/rockfm-white.png"
     },
     {
