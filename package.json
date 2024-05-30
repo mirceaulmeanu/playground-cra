@@ -150,6 +150,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.0.0"
+    "@capacitor/cli": "^6.0.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
