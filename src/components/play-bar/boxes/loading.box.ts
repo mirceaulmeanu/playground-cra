@@ -19,4 +19,8 @@ export const LoadingBox = styled(AutorenewIcon)`
     height: 70px;
     color: #ccc;
     animation: ${roundRoundLikeARecordRoundRound} 0.8s linear infinite;
+
+    @media (min-width: 600px) {
+        top: -3px;
+    }
 `;
