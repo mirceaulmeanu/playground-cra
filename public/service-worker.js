@@ -39,6 +39,9 @@ self.addEventListener("install", installEvent => {
         //     const cache = await caches.open(CACHE_NAME);
         //     cache.addAll(APP_STATIC_RESOURCES);
         // })()
+        // OR
+        // if nothing to be done
+        Promise.resolve()
     );
     
     /**
@@ -85,7 +88,7 @@ self.addEventListener("activate", (activateEvent) => {
  * This is an example o
  */
 self.addEventListener("fetch", fetchEvent => {
-    fetchEvent.respondWith(async () => {
+    fetchEvent.respondWith((async () => {
         /**
          * This is an example of a network first strategy (do the network request, cache response to be used if subsequent request fail)
          * However, for the moment i don't know how this works with streaming urls, so let's leave it commented 
@@ -105,7 +108,7 @@ self.addEventListener("fetch", fetchEvent => {
          * Network only strategy
          */
         return await fetch(fetchEvent.request);
-    })
+    })())
 });
 
 /**
