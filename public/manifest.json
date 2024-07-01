@@ -14,6 +14,11 @@
       "sizes": "256x256"
     },
     {
+      "src": "radio-192px.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
       "src": "radio-128px.png",
       "type": "image/png",
       "sizes": "128x128"
