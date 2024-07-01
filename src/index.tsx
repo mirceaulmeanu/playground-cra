@@ -13,6 +13,8 @@ const sessionStorage = new SessionStorageService();
 
 const services = new ServiceFactory(localStorage, sessionStorage);
 
+services.serviceWorker.registerOnPageLoad();
+
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );

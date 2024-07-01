@@ -1,5 +1,7 @@
 import {LazyFactory} from "../utils/lazy/lazy-factory";
 import {IServiceFactoryExtended} from "./service-factory-extended.interface";
+import {ServiceWorkerService} from "./service-worker/service-worker.service";
+import {IServiceWorkerService} from "./service-worker/service-worker.service.interface";
 import {SettingsService} from "./settings/settings.service";
 import {ISettingsService} from "./settings/settings.service.interface";
 import {IStorageService} from "./storage/storage.service.interface";
@@ -34,5 +36,10 @@ export class ServiceFactory implements IServiceFactoryExtended {
     private _streamPlay = new LazyFactory<IStreamPlayService>(() => new StreamPlayService(this));
     public get streamPlay(): IStreamPlayService {
         return this._streamPlay.data;
+    }
+    
+    private _serviceWorker = new LazyFactory<IServiceWorkerService>(() => new ServiceWorkerService(this));
+    public get serviceWorker(): IServiceWorkerService {
+        return this._serviceWorker.data;
     }
 }
