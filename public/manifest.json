@@ -1,16 +1,37 @@
 {
-  "short_name": "Radio Stream Playground",
-  "name": "Radio Stream Playground. A simple radio app where you add your favourite stream urls and listen to them. Done with CRA, mobx and capacitor",
+  "short_name": "Radio Stream",
+  "name": "Radio Stream Playground",
+  "description": "A simple radio app where you add your favourite stream urls and listen to them. Done with CRA, mobx and capacitor",
   "icons": [
     {
+      "src": "radio-512px.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "radio-256px.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "radio-128px.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "radio-64px.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "48x48",
       "type": "image/x-icon"
     },
     {
-      "src": "ic_radio_128_28540.png",
+      "src": "radio-32px.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "sizes": "32x32"
     }
   ],
   "start_url": ".",
