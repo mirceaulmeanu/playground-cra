@@ -1,3 +1,4 @@
+import {IServiceWorkerService} from "./service-worker/service-worker.service.interface";
 import {ISettingsService} from "./settings/settings.service.interface";
 import {IStorageService} from "./storage/storage.service.interface";
 import {IStreamFormService} from "./stream-form/stream-form.service.interface";
@@ -11,4 +12,5 @@ export interface IServiceFactory {
     readonly streamsList: IStreamsListService;
     readonly streamForm: IStreamFormService;
     readonly streamPlay: IStreamPlayService;
+    readonly serviceWorker: IServiceWorkerService;
 }
