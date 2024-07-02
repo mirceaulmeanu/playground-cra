@@ -1,19 +1,27 @@
+/// <reference lib="webworker" />
+/* eslint-disable no-restricted-globals */
 // "use strict";
-/**
- * For available members and events of Service Worker Global Scope check:
- * https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/
- */
-
 /**
  * If needed, import external script resources
  */
 // self.importScripts("path/to/script.js");
 // importScripts('https://web-sdk.urbanairship.com/notify/v1/ua-sdk.min.js');
+import {precacheAndRoute} from 'workbox-precaching';
 
-const VERSION = "v1";
+/**
+ * For available members and events of Service Worker Global Scope check:
+ * https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/
+ */
+declare var self: ServiceWorkerGlobalScope;
+
+precacheAndRoute(self.__WB_MANIFEST);
+
+const VERSION = "v3";
 const CACHE_NAME = `radio-stream-playground-${VERSION}`;
 
-// const APP_STATIC_RESOURCES = [ ... ];
+const APP_STATIC_RESOURCES = [
+    "/"
+];
 
 /**
  * The "install" event happens when the app is used for the first time,
@@ -31,9 +39,9 @@ self.addEventListener("install", installEvent => {
          * Only available in secure contexts, the WorkerGlobalScope.caches property returns a CacheStorage object associated with the current context.
          * The CacheStorage.open() method returns a Promise that resolves to the Cache object matching name of the cache, passed as a parameter.
          */
-        // caches.open(CACHE_NAME).then(cache => {
-        //     cache.addAll(APP_STATIC_RESOURCES)
-        // });
+        caches.open(CACHE_NAME).then(cache => {
+            cache.addAll(APP_STATIC_RESOURCES)
+        })
         // OR
         // (async () => {
         //     const cache = await caches.open(CACHE_NAME);
@@ -41,7 +49,7 @@ self.addEventListener("install", installEvent => {
         // })()
         // OR
         // if nothing to be done
-        Promise.resolve()
+        // Promise.resolve()
     );
     
     /**
@@ -107,7 +115,25 @@ self.addEventListener("fetch", fetchEvent => {
         /**
          * Network only strategy
          */
+        // return await fetch(fetchEvent.request);
+        /**
+         * Cache first WITHOUT cache refresher 
+         */
+        const cachedResponse = await caches.match(fetchEvent.request);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
         return await fetch(fetchEvent.request);
+        // try {
+        //     const networkResponse = await fetch(request);
+        //     if (networkResponse.ok) {
+        //     const cache = await caches.open(CACHE_NAME);
+        //     cache.put(request, networkResponse.clone());
+        //     }
+        //     return networkResponse;
+        // } catch (error) {
+        //     return Response.error();
+        // }
     })())
 });
 

@@ -44,3 +44,40 @@ Download a release, rename to "mkcert.exe", copy it to a folder in your PATH (En
 Run `mkcert -install`.
 Run `mkcert localhost`.
 Two files will be generated `localhost.pem` and `localhost-key.pem`. Copy them in a folder outside of your project named `ssl-certificates` so they will be found when the app checks the pats in `.env` file: Example: `SSL_CRT_FILE=../ssl-certificates/localhost.pem`.
+
+# Service-Worker with typescript
+
+## CRA and Webpack build configuration
+
+When using CRA, you can create a service-worker.ts or service-worker.js file in your src folder.
+As long as the name is the same are the one defined for swSrc in paths.js the file will be taken, transpiled if necessary (if typescript) and used as a service worker.
+Be aware that you must include somewhere relatively at the beginning those 2 lines:
+`import {precacheAndRoute} from 'workbox-precaching';` and `precacheAndRoute(self.__WB_MANIFEST);` otherwise building the project will error `Can't find self.__WB_MANIFEST in your SW source.`
+That is because CRA uses `WorkboxWebpackPlugin.InjectManifest` in webpack config. Also, CRA is using workbox so you might as well use it too if you want.
+
+Otherwise, if ejected, create a service worker somewhere else or with a different name and add a new entry point in webpack config like this:
+```
+entry: {
+    main: paths.appIndexJs,
+    serviceWorker: {
+        import: paths.appServiceWorker,
+        filename: 'service-worker.js'
+    }
+},
+```
+where appServiceWorker is a new path added to paths.js to the new service worker
+
+## Writing service worker in typescript
+
+First of all this must be added at the top of the file:
+```
+/// <reference lib="webworker" />
+/* eslint-disable no-restricted-globals */
+```
+And then if trying to declare self as ServiceWorkerGlobalScope like this: `declare var self: ServiceWorkerGlobalScope;` youll get an error.
+What you can do is add an import (and for workbox you allready do), add an empty export `export {}` or wrap the code in this:
+```
+(function (self: ServiceWorkerGlobalScope) {
+    // ... sw code goes here
+})(<ServiceWorkerGlobalScope>self);
+```
