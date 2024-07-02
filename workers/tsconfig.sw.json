@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": [
+      "WebWorker"
+    ],
+    "outDir": "../public",
+    "allowJs": true,
+    "moduleResolution": "node"
+  },
+  "files": [
+    "service-worker/service-worker.ts"
+  ]
+}

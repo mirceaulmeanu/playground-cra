@@ -1,22 +1,21 @@
 /// <reference lib="webworker" />
 /* eslint-disable no-restricted-globals */
-// "use strict";
+
 /**
  * If needed, import external script resources
  */
 // self.importScripts("path/to/script.js");
 // importScripts('https://web-sdk.urbanairship.com/notify/v1/ua-sdk.min.js');
-import {precacheAndRoute} from 'workbox-precaching';
 
 /**
  * For available members and events of Service Worker Global Scope check:
  * https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/
+ * 
+ * This cast is only for typescript. If I use `declare var self: ServiceWorkerGlobalScope;` I get an error
  */
-declare var self: ServiceWorkerGlobalScope;
+var _self: ServiceWorkerGlobalScope = self as unknown as ServiceWorkerGlobalScope;
 
-precacheAndRoute(self.__WB_MANIFEST);
-
-const VERSION = "v3";
+const VERSION = "v25";
 const CACHE_NAME = `radio-stream-playground-${VERSION}`;
 
 const APP_STATIC_RESOURCES = [
@@ -29,7 +28,7 @@ const APP_STATIC_RESOURCES = [
  * When an older service worker is being replaced by a new one,
  *  the old service worker is used as the PWA's service worker until the new service work is activated.
  */
-self.addEventListener("install", installEvent => {
+_self.addEventListener("install", installEvent => {
     /**
      * https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
      * ExtendableEvent.waitUntil receives a Promise as an argument
@@ -67,7 +66,7 @@ self.addEventListener("install", installEvent => {
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/activate_event
  */
-self.addEventListener("activate", (activateEvent) => {
+_self.addEventListener("activate", (activateEvent) => {
     activateEvent.waitUntil(
         (async () => {
             const names = await caches.keys();
@@ -95,7 +94,7 @@ self.addEventListener("activate", (activateEvent) => {
  * 
  * This is an example o
  */
-self.addEventListener("fetch", fetchEvent => {
+_self.addEventListener("fetch", fetchEvent => {
     fetchEvent.respondWith((async () => {
         /**
          * This is an example of a network first strategy (do the network request, cache response to be used if subsequent request fail)
@@ -140,11 +139,17 @@ self.addEventListener("fetch", fetchEvent => {
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/message_event
  */
-self.addEventListener("message", messageEvent => {
+_self.addEventListener("message", messageEvent => {
     if (messageEvent.data === "SKIP_WAITING") {
         /**
          * https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/skipWaiting
          */
-        self.skipWaiting();
+        _self.skipWaiting();
     }
 });
+
+/**
+ * This export here has no use except for supressing a typescript error that we get by trying to declare the correct type of self
+ * The same effect would have adding an import but for now we don't need to import anything so we keep this
+ */
+// export {}

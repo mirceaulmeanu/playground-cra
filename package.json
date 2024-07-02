@@ -71,8 +71,11 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "start-with-workers": "concurrently \"npm run workers-watch\" \"node scripts/start.js\"",
+    "build": "npm run workers & node scripts/build.js",
+    "test": "node scripts/test.js",
+    "workers-watch": "tsc --project workers/tsconfig.sw.json --watch",
+    "workers": "tsc --project workers/tsconfig.sw.json"
   },
   "eslintConfig": {
     "extends": [
@@ -149,6 +152,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "concurrently": "^8.2.2"
   }
 }
