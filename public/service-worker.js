@@ -134,8 +134,3 @@ _self.addEventListener("message", messageEvent => {
         _self.skipWaiting();
     }
 });
-/**
- * This export here has no use except for supressing a typescript error that we get by trying to declare the correct type of self
- * The same effect would have adding an import but for now we don't need to import anything so we keep this
- */
-// export {}

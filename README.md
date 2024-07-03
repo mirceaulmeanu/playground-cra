@@ -58,23 +58,46 @@ Be aware that you must include somewhere at the beginning those 2 lines:
 That is because CRA uses `WorkboxWebpackPlugin.InjectManifest` in webpack config. CRA is using workbox so you might as well use it too if you want.
 Also, adding an import and not just the solution mentioned by CRA in the docs also helps when declaring self as ServiceWorkerGlobalScope. Adding an import makes the file a module and typescript no longer complains about not being able to redeclare self.
 
-### 2. New webpack entry point
-Otherwise, if ejected, create a service worker somewhere else or with a different name and add a new entry point in webpack config like this:
+### 2. Separate build for service-worker without involving webpack
+
+In the root folder I created a `workers` folder and inside that a `tsconfig.sw.json` and another folder `service-worker` containing the typescript sw file.
+In package.json I created a scripts for running tsc with the dedicated tsconfig.sw.json file, with and without watch.
+
+### 3. New webpack entry point
+If CRA is ejected and you want service worker to work in dev environment and don't mind the boilerplate webpack adds (only for dev build, not for prod build):
+Create a service worker in the same `workers/service-worker` folder and add a new entry point in webpack config like this:
 ```
 entry: {
     main: paths.appIndexJs,
     serviceWorker: {
-        import: paths.appServiceWorker,
+        import: paths.swTsSrc,
         filename: 'service-worker.js'
     }
 },
 ```
-where appServiceWorker is a new path added to paths.js to the new service worker
-
-### 3. Separate build for service-worker without involving webpack
-
-In the root folder I created a `workers` folder and inside that a `tsconfig.sw.json` and another folder `service-worker` containing the typescript sw file.
-In package.json I created a script for running tsc with the dedicated tsconfig.sw.json file.
+where swTsSrc is a new path added to paths.js to the new service worker: `swTsSrc: resolveModule(resolveApp, 'workers/service-worker/service-worker'),`
+Add another babel loader for the worker because it's outside src folder. Put it before the original babel loader:
+```
+{
+    test: /service-worker\.(js|ts)$/,
+    include: paths.appWorkersSrc,
+    loader: require.resolve('babel-loader'),
+    options: {
+        presets: [
+            '@babel/preset-env',
+            '@babel/preset-typescript'
+        ],
+        // This is a feature of `babel-loader` for webpack (not Babel itself).
+        // It enables caching results in ./node_modules/.cache/babel-loader/
+        // directory for faster rebuilds.
+        cacheDirectory: true,
+        // See #6846 for context on why cacheCompression is disabled
+        cacheCompression: false,
+    },
+    exclude: /node_modules/
+},
+```
+paths.appWorkersSrc - `appWorkersSrc: resolveApp('workers'),`
 
 ## Writing service worker in typescript
 
