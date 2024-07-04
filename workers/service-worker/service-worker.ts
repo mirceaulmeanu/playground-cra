@@ -116,13 +116,40 @@ _self.addEventListener("fetch", fetchEvent => {
          */
         // return await fetch(fetchEvent.request);
         /**
-         * Cache first WITHOUT cache refresher 
+         * Cache first WITH cache refresher . Modified to cache only some types of resources
          */
+        function shouldCacheNetworkResponse(url: string, dest: RequestDestination) {
+            // we actually want to avoid trying to cache stuff like "chrome-extension://" and other like this.
+            if (!/^https:\/\//.test(url)) {
+                return false;
+            }
+            // we want to cache just some types of resources. Other options we don't want or doesnt interest us
+            // other possible remaining values are:
+            // "" | "audio" | "audioworklet" | "embed" | "frame" | "iframe" | "manifest" | "paintworklet" | "report" | "sharedworker" | "track" | "video" | "worker" | "xslt"
+            if (["object", "document", "font", "image", "script", "style"].indexOf(dest) >= 0) {
+                return true;
+            }
+            return false;
+        }
+
+        // send the request to network anyway, and if successful cache it for the next time
+        const fetchResponsePromise = fetch(fetchEvent.request).then(async (networkResponse) => {
+            // console.log("REQUEST", fetchEvent.request.clone());
+            if (networkResponse.ok && shouldCacheNetworkResponse(fetchEvent.request.url, fetchEvent.request.destination)) {
+                const cache = await caches.open(CACHE_NAME);
+                cache.put(fetchEvent.request, networkResponse.clone());
+            }
+            return networkResponse;
+        });
+        
         const cachedResponse = await caches.match(fetchEvent.request);
         if (cachedResponse) {
             return cachedResponse;
         }
-        return await fetch(fetchEvent.request);
+        return await fetchResponsePromise;
+        /**
+         * Cache first WITHOUT cache refresher 
+         */
         // try {
         //     const networkResponse = await fetch(request);
         //     if (networkResponse.ok) {

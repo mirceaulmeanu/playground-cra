@@ -73,6 +73,7 @@
     "start": "node scripts/start.js",
     "start-with-workers": "concurrently \"npm run workers-watch\" \"node scripts/start.js\"",
     "build": "npm run workers & node scripts/build.js",
+    "build-with-workers": "npm run workers & node scripts/build.js",
     "test": "node scripts/test.js",
     "workers-watch": "tsc --project workers/tsconfig.sw.json --watch",
     "workers": "tsc --project workers/tsconfig.sw.json"

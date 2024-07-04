@@ -6,12 +6,15 @@ import {useState} from 'react';
 import {Drawer} from '../drawer/drawer.component';
 import {Settings} from '../settings/settings.component';
 import {MainMenu} from '../main-menu/main-menu.component';
+import {useServices} from '../../react-hooks/use-services.hook';
+import {observer} from 'mobx-react';
 
 interface ITopBarProps {}
 
-export function TopBar(props: ITopBarProps) {
+export const TopBar: React.FC<ITopBarProps> = observer(() => {
     let [leftMenuOpen, setLeftMenuOpen] = useState(false);
     let [rightMenuOpen, setRightMenuOpen] = useState(false);
+    const services = useServices();
 
     return <HideOnScroll><AppBar position="sticky" >
         <Toolbar>
@@ -29,6 +32,7 @@ export function TopBar(props: ITopBarProps) {
             <MainMenu />
         </Drawer>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            { services.networkStatus.online ? "" : "offline" }
         </Typography>
         <IconButton
             size="large"
@@ -45,4 +49,4 @@ export function TopBar(props: ITopBarProps) {
         </Drawer>
         </Toolbar>
     </AppBar></HideOnScroll>
-}
+});

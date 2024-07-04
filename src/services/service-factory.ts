@@ -1,4 +1,6 @@
 import {LazyFactory} from "../utils/lazy/lazy-factory";
+import {NetworkStatusService} from "./network-status/network-status.service";
+import {INetworkStatusService} from "./network-status/network-status.service.interface";
 import {IServiceFactoryExtended} from "./service-factory-extended.interface";
 import {ServiceWorkerService} from "./service-worker/service-worker.service";
 import {IServiceWorkerServiceExtended} from "./service-worker/service-worker.service.interface";
@@ -21,6 +23,11 @@ export class ServiceFactory implements IServiceFactoryExtended {
     private _settings = new LazyFactory<ISettingsService>(() => new SettingsService(this));
     public get settings(): ISettingsService {
         return this._settings.data;
+    }
+
+    private _networkStatus = new LazyFactory<INetworkStatusService>(() => new NetworkStatusService(this));
+    public get networkStatus(): INetworkStatusService {
+        return this._networkStatus.data;
     }
 
     private _streamsList = new LazyFactory<IStreamsListService>(() => new StreamsListService(this));
